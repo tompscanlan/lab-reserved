@@ -1,0 +1,74 @@
+consumes:
+- application/json
+info:
+  description: REST interface for lab items reserved by a person until a date
+  title: labreserved
+  version: 0.0.1
+produces:
+- application/json
+schemes:
+- https
+- http
+swagger: "2.0"
+
+paths:
+  /items:
+    get:
+      responses:
+        200:
+          description: list all items in the lab
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+
+definitions:
+  items:
+    description: list of items
+    type: array
+    items:
+      $ref: "#/definitions/item"
+  item:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+        readOnly: true
+      name:
+        type: string
+        minLength: 1
+        maxLength: 512
+        description: name of the thing in the lab reserved
+      description:
+        type: string
+        minLength: 1
+        maxLength: 2048
+      reservedUntil:
+        type: string
+        format: date-time
+        description: date/time this reservation will expire
+      reservedBy:
+        $ref: "#/definitions/owner"
+  owner:
+    type: object
+    required:
+      - name
+      - email
+    properties:
+      id:
+        type: integer
+        format: int64
+        readOnly: true
+      email:
+        type: string
+        format: email
+        description: owner contact email
+      name:
+        type: string
+        minLength: 1
+        maxLength: 512
+        description: reservation owner's name
+
