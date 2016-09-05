@@ -40,7 +40,7 @@ type Item struct {
 
 	/* reserved by
 	 */
-	ReservedBy *Owner `json:"reservedBy,omitempty"`
+	ReservedBy *User `json:"reservedBy,omitempty"`
 
 	/* date/time this reservation will expire
 	 */

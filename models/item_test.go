@@ -31,25 +31,33 @@ var itemTests = []struct {
 	},
 
 	{
-		Item{Name: strPtr("name"), Description: "reserved until now + 1 minute", ReservedUntil: strfmt.DateTime(time.Now().Add(time.Minute))},
+		Item{Name: strPtr("name"),
+			Description:   "reserved until now + 1 minute",
+			ReservedUntil: strfmt.DateTime(time.Now().Add(time.Minute))},
 		true,
 		true,
 	},
 
 	{
-		Item{Name: strPtr("name"), Description: "reserved until 1 hour from now", ReservedUntil: strfmt.DateTime(time.Now().Add(time.Hour))},
+		Item{Name: strPtr("name"),
+			Description:   "reserved until 1 hour from now",
+			ReservedUntil: strfmt.DateTime(time.Now().Add(time.Hour))},
 		true,
 		true,
 	},
 
 	{
-		Item{Name: strPtr("name"), Description: "reserved until 1 day from now", ReservedUntil: strfmt.DateTime(time.Now().Add(24 * time.Hour))},
+		Item{Name: strPtr("name"),
+			Description:   "reserved until 1 day from now",
+			ReservedUntil: strfmt.DateTime(time.Now().Add(24 * time.Hour))},
 		true,
 		true,
 	},
 
 	{
-		Item{Name: strPtr("name"), Description: "reserved until 1 Year from now", ReservedUntil: strfmt.DateTime(time.Now().Add(24 * time.Hour * 365))},
+		Item{Name: strPtr("name"),
+			Description:   "reserved until 1 Year from now",
+			ReservedUntil: strfmt.DateTime(time.Now().Add(24 * time.Hour * 365))},
 		true,
 		true,
 	},
@@ -66,14 +74,11 @@ func TestNewItem(t *testing.T) {
 		if !itemTests[i].valid && err == nil {
 			t.Error("unexpected err for item %d", i)
 		}
-
 	}
 }
 
 func TestReserved(t *testing.T) {
-
 	for i, _ := range itemTests {
-
 		if itemTests[i].in.isReserved() != itemTests[i].isReserved {
 			t.Errorf("%d isn't reserved, but should be", i)
 		}

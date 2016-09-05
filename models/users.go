@@ -10,17 +10,17 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-/*Items map of items
+/*Users map of users
 
-swagger:model items
+swagger:model users
 */
-type Items map[string]Item
+type Users map[string]User
 
-// Validate validates this items
-func (m Items) Validate(formats strfmt.Registry) error {
+// Validate validates this users
+func (m Users) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := validate.Required("", "body", Items(m)); err != nil {
+	if err := validate.Required("", "body", Users(m)); err != nil {
 		return err
 	}
 

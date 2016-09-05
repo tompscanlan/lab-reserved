@@ -10,13 +10,13 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-/*Owner owner
+/*User user
 
-swagger:model owner
+swagger:model user
 */
-type Owner struct {
+type User struct {
 
-	/* owner contact email
+	/* user contact email
 
 	Required: true
 	*/
@@ -28,7 +28,7 @@ type Owner struct {
 	*/
 	ID int64 `json:"id,omitempty"`
 
-	/* reservation owner's name
+	/* reservation user's name
 
 	Required: true
 	Max Length: 512
@@ -37,8 +37,8 @@ type Owner struct {
 	Name *string `json:"name"`
 }
 
-// Validate validates this owner
-func (m *Owner) Validate(formats strfmt.Registry) error {
+// Validate validates this user
+func (m *User) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateEmail(formats); err != nil {
@@ -57,7 +57,7 @@ func (m *Owner) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Owner) validateEmail(formats strfmt.Registry) error {
+func (m *User) validateEmail(formats strfmt.Registry) error {
 
 	if err := validate.Required("email", "body", m.Email); err != nil {
 		return err
@@ -66,7 +66,7 @@ func (m *Owner) validateEmail(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Owner) validateName(formats strfmt.Registry) error {
+func (m *User) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err

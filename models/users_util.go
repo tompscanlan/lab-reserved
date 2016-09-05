@@ -7,13 +7,13 @@ import (
 	"log"
 )
 
-func NewItems() Items {
-	items := make(Items)
-	return items
+func NewUsers() Users {
+	users := make(Users)
+	return users
 }
 
-func (items Items) String() string {
-	b, err := json.Marshal(items)
+func (users Users) String() string {
+	b, err := json.Marshal(users)
 
 	if err != nil {
 		log.Println(err)
@@ -24,9 +24,9 @@ func (items Items) String() string {
 	return s
 }
 
-// Store all the items as JSON in a file
-func (items Items) Store(filename string) error {
-	b, err := json.Marshal(items)
+// Store all the users as JSON in a file
+func (users Users) Store(filename string) error {
+	b, err := json.Marshal(users)
 	if err != nil {
 		return err
 	}

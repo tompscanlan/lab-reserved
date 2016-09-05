@@ -46,6 +46,8 @@ type LabreservedAPI struct {
 
 	// GetItemsHandler sets the operation handler for the get items operation
 	GetItemsHandler GetItemsHandler
+	// PostItemHandler sets the operation handler for the post item operation
+	PostItemHandler PostItemHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -106,6 +108,10 @@ func (o *LabreservedAPI) Validate() error {
 
 	if o.GetItemsHandler == nil {
 		unregistered = append(unregistered, "GetItemsHandler")
+	}
+
+	if o.PostItemHandler == nil {
+		unregistered = append(unregistered, "PostItemHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -185,6 +191,11 @@ func (o *LabreservedAPI) initHandlerCache() {
 		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/items"] = NewGetItems(o.context, o.GetItemsHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/item"] = NewPostItem(o.context, o.PostItemHandler)
 
 }
 

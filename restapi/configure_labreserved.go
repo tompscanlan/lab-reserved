@@ -8,6 +8,7 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
+	"github.com/tompscanlan/labreserved"
 	"github.com/tompscanlan/labreserved/restapi/operations"
 )
 
@@ -32,7 +33,23 @@ func configureAPI(api *operations.LabreservedAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.GetItemsHandler = operations.GetItemsHandlerFunc(func(params operations.GetItemsParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetItems has not yet been implemented")
+		items := operations.NewGetItemsOK()
+		items.SetPayload(labreserved.AllItems)
+		return items
+	})
+	api.PostItemHandler = operations.PostItemHandlerFunc(func(params operations.PostItemParams) middleware.Responder {
+		labreserved.AllItems[*params.Additem.Name] = *params.Additem
+		item := operations.NewPostItemOK()
+		i, ok := labreserved.AllItems[*params.Additem.Name]
+		if ok {
+			item.SetPayload(&i)
+			return item
+		} else {
+			err := operations.NewPostItemBadRequest()
+			err.SetPayload("failed to add and/or find item to lab map")
+			return err
+		}
+
 	})
 
 	api.ServerShutdown = func() {}

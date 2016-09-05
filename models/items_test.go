@@ -10,19 +10,21 @@ func TestNewItems(t *testing.T) {
 	var reg strfmt.Registry
 	items := NewItems()
 
-	items = append(items, NewItem("name", "desc"))
-	items = append(items, NewItem("name", "desc"))
-	items = append(items, NewItem("name1", "desc"))
+	items["name"] = NewItem("name", "desc")
+	items["name1"] = NewItem("name1", "desc")
+	items["name2"] = NewItem("name2", "desc")
 
 	for i, _ := range items {
-		err := items[i].Validate(reg)
+		item := items[i]
+		err := item.Validate(reg)
 		if err != nil {
 			t.Error(err)
 		}
 	}
 
-	items = append(items, NewItem("", "desc"))
-	err := items[3].Validate(reg)
+	items[""] = NewItem("", "desc")
+	item := items[""]
+	err := item.Validate(reg)
 	if err == nil {
 		t.Error("should fail with no name")
 	}
@@ -31,9 +33,9 @@ func TestNewItems(t *testing.T) {
 func TestOutputItems(t *testing.T) {
 	items := NewItems()
 
-	items = append(items, NewItem("name", "desc"))
-	items = append(items, NewItem("name", "desc"))
-	items = append(items, NewItem("name1", "desc"))
+	items["name"] = NewItem("name", "desc")
+	items["name1"] = NewItem("name1", "desc")
+	items["name2"] = NewItem("name2", "desc")
 
 	var file = "/dev/null"
 	if testing.Verbose() {

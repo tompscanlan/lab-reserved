@@ -3,27 +3,20 @@ package models
 import (
 	"log"
 	"time"
-
-	"github.com/go-openapi/strfmt"
 )
 
-//func NewItem() *Item {
-//	item := new(Item)
-//	return item
-//}
-
-func NewItem(name string, description string) *Item {
+func NewItem(name string, description string) Item {
 	item := new(Item)
 	item.Name = &name
 	item.Description = description
-	return item
+	return *item
 }
 
-func (item *Item) Reserve(owner string, date strfmt.Date) {
+func (item *Item) Reserve(owner string, until time.Time) (ok bool, err error) {
+	//item.ReservedBy =
 
+	return false, nil
 }
-
-//strfmt.DateTime(time.Now().Add(time.Hour))},
 
 func (item Item) isReservedOn(date time.Time) bool {
 
@@ -45,5 +38,4 @@ func (item Item) isReservedOn(date time.Time) bool {
 func (item Item) isReserved() bool {
 	date := time.Now()
 	return item.isReservedOn(date)
-
 }

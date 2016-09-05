@@ -7,19 +7,19 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-func TestNewOwner(t *testing.T) {
+func TestNewUser(t *testing.T) {
 	var reg strfmt.Registry
 
-	owner := NewOwner("name", "tom@test.com")
+	user := NewUser("name", "tom@test.com")
 
-	log.Println(owner)
-	err := owner.Validate(reg)
+	log.Println(user)
+	err := user.Validate(reg)
 	if err != nil {
 		t.Error(err)
 	}
 
-	owner = NewOwner("name", "xxx")
-	err = owner.Validate(reg)
+	user = NewUser("name", "xxx")
+	err = user.Validate(reg)
 	if err != nil {
 		t.Error(err)
 	}

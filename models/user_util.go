@@ -9,30 +9,30 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-func NewOwner(name string, email string) *Owner {
+func NewUser(name string, email string) User {
 	// at some point, need to add in email validation
 	//	if !govalidator.IsEmail(email) {
-	//		log.Printf("Got bad email (%s) for owner (%s)", email, name)
+	//		log.Printf("Got bad email (%s) for user (%s)", email, name)
 	//		email = "bad@example.com"
 	//	}
 
 	e := strfmt.Email(email)
 
-	owner := new(Owner)
-	owner.Name = &name
-	owner.Email = &e
-	return owner
+	user := new(User)
+	user.Name = &name
+	user.Email = &e
+	return *user
 }
 
-func (owner Owner) String() string {
+func (user User) String() string {
 
-	return fmt.Sprintf("owner: \"%s\" <%s>", *owner.Name, owner.Email)
+	return fmt.Sprintf("user: \"%s\" <%s>", *user.Name, user.Email)
 
 }
 
 // Store all the items as JSON in a file
-func (owner Owner) Store(filename string) error {
-	b, err := json.Marshal(owner)
+func (user User) Store(filename string) error {
+	b, err := json.Marshal(user)
 	if err != nil {
 		return err
 	}

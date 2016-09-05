@@ -3,6 +3,13 @@
 *.a
 *.so
 
+# testing files
+labreserved-server
+temp.crt
+temp.key
+privkey.pem
+*.swp
+
 # Folders
 _obj
 _test

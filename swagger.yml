@@ -18,15 +18,33 @@ paths:
         200:
           description: list all items in the lab
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/item"
-
+            type: object
+            $ref: "#/definitions/items"
+  /item:
+    post:
+      description: add a single item to the lab list
+      parameters:
+        - name: additem
+          description: representation of the item to add
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/item"
+      responses:
+        200:
+          description: Accepted
+          schema:
+            type: object
+            $ref: "#/definitions/item"
+        400:
+          description: Error
+          schema:
+            type: string
 definitions:
   items:
-    description: list of items
-    type: array
-    items:
+    description: map of items
+    type: object
+    additionalProperties:
       $ref: "#/definitions/item"
   item:
     type: object
@@ -51,8 +69,13 @@ definitions:
         format: date-time
         description: date/time this reservation will expire
       reservedBy:
-        $ref: "#/definitions/owner"
-  owner:
+        $ref: "#/definitions/user"
+  users:
+    description: map of users
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/user"
+  user:
     type: object
     required:
       - name
@@ -65,10 +88,10 @@ definitions:
       email:
         type: string
         format: email
-        description: owner contact email
+        description: user contact email
       name:
         type: string
         minLength: 1
         maxLength: 512
-        description: reservation owner's name
+        description: reservation user's name
 
