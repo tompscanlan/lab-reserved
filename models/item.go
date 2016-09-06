@@ -38,13 +38,9 @@ type Item struct {
 	*/
 	Name *string `json:"name"`
 
-	/* reserved by
+	/* ordered list of reservations
 	 */
-	ReservedBy *User `json:"reservedBy,omitempty"`
-
-	/* date/time this reservation will expire
-	 */
-	ReservedUntil strfmt.DateTime `json:"reservedUntil,omitempty"`
+	Reservations []*Reservation `json:"reservations,omitempty"`
 }
 
 // Validate validates this item
@@ -61,7 +57,7 @@ func (m *Item) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateReservedBy(formats); err != nil {
+	if err := m.validateReservations(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -106,17 +102,25 @@ func (m *Item) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Item) validateReservedBy(formats strfmt.Registry) error {
+func (m *Item) validateReservations(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.ReservedBy) { // not required
+	if swag.IsZero(m.Reservations) { // not required
 		return nil
 	}
 
-	if m.ReservedBy != nil {
+	for i := 0; i < len(m.Reservations); i++ {
 
-		if err := m.ReservedBy.Validate(formats); err != nil {
-			return err
+		if swag.IsZero(m.Reservations[i]) { // not required
+			continue
 		}
+
+		if m.Reservations[i] != nil {
+
+			if err := m.Reservations[i].Validate(formats); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	return nil

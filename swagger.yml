@@ -64,12 +64,30 @@ definitions:
         type: string
         minLength: 1
         maxLength: 2048
-      reservedUntil:
+      reservations:
+        description: ordered list of reservations
+        type: array
+        items:
+          $ref: "#/definitions/reservation"
+  reservation:
+    description: date-time marking start of reservation,  duration, and owner of the reservation
+    type: object
+    required:
+      - username
+      - begin
+      - hoursheld
+    properties:
+      username:
+        description: user claiming the reservation
+        type: string
+      begin:
+        description: date-time the reservation begins
         type: string
         format: date-time
-        description: date/time this reservation will expire
-      reservedBy:
-        $ref: "#/definitions/user"
+      hoursheld:
+        description: length in hours of the reservation
+        type: integer
+        format: int64
   users:
     description: map of users
     type: object

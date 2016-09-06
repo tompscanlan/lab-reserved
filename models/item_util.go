@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 )
@@ -12,25 +13,22 @@ func NewItem(name string, description string) Item {
 	return *item
 }
 
-func (item *Item) Reserve(owner string, until time.Time) (ok bool, err error) {
-	//item.ReservedBy =
+func (item *Item) Reserve(owner string, time time.Time, hours int) bool {
 
-	return false, nil
+	r := NewReservation(owner, time, hours)
+	item.Reservations = append(item.Reservations, &r)
+
+	return true
 }
 
-func (item Item) isReservedOn(date time.Time) bool {
+func (item Item) isReservedOn(time time.Time) bool {
 
-	parsed, err := time.Parse(time.RFC3339, item.ReservedUntil.String())
-	if err != nil {
-		log.Panicln(err)
-		return false
-	}
-	//	log.Printf("checking reservation for date: %s, and item is reserved until %s", parsed, date)
+	for _, r := range item.Reservations {
+		_, taken := r.ReservedAt(time)
 
-	//log.Println("difference in dates: ", date.Sub(parsed))
-	// if reserved is in the future
-	if date.Sub(parsed) < 0 {
-		return true
+		if taken {
+			return true
+		}
 	}
 	return false
 }
@@ -38,4 +36,15 @@ func (item Item) isReservedOn(date time.Time) bool {
 func (item Item) isReserved() bool {
 	date := time.Now()
 	return item.isReservedOn(date)
+}
+
+func (item Item) String() string {
+	b, err := json.Marshal(item)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	s := string(b[:])
+	return s
 }
