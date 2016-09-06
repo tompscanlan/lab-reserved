@@ -15,10 +15,10 @@ import (
 	"github.com/tompscanlan/labreserved/restapi/operations"
 )
 
-//go:generate swagger generate server -t ../.. -A Packerd -f ./swagger.yml
+//go:generate swagger generate server -t ../.. -A Labreserved -f ./swagger.yml
 
-// NewServer creates a new api packerd server but does not configure it
-func NewServer(api *operations.PackerdAPI) *Server {
+// NewServer creates a new api labreserved server but does not configure it
+func NewServer(api *operations.LabreservedAPI) *Server {
 	s := new(Server)
 	s.api = api
 	return s
@@ -38,7 +38,7 @@ func (s *Server) ConfigureFlags() {
 	}
 }
 
-// Server for the packerd API
+// Server for the labreserved API
 type Server struct {
 	Host        string `long:"host" description:"the IP to listen on" default:"localhost" env:"HOST"`
 	Port        int    `long:"port" description:"the port to listen on for insecure connections, defaults to a random value" env:"PORT"`
@@ -50,7 +50,7 @@ type Server struct {
 	TLSCertificateKey flags.Filename `long:"tls-key" description:"the private key to use for secure conections" required:"true" env:"TLS_PRIVATE_KEY"`
 	httpsServerL      net.Listener
 
-	api          *operations.PackerdAPI
+	api          *operations.LabreservedAPI
 	handler      http.Handler
 	hasListeners bool
 }
@@ -65,7 +65,7 @@ func (s *Server) Logf(f string, args ...interface{}) {
 }
 
 // SetAPI configures the server with the specified API. Needs to be called before Serve
-func (s *Server) SetAPI(api *operations.PackerdAPI) {
+func (s *Server) SetAPI(api *operations.LabreservedAPI) {
 	if api == nil {
 		s.api = nil
 		s.handler = nil
@@ -88,7 +88,7 @@ func (s *Server) Serve() (err error) {
 	httpServer := &graceful.Server{Server: new(http.Server)}
 	httpServer.Handler = s.handler
 
-	s.Logf("Serving packerd at http://%s", s.httpServerL.Addr())
+	s.Logf("Serving labreserved at http://%s", s.httpServerL.Addr())
 	go func(l net.Listener) {
 		if err := httpServer.Serve(tcpKeepAliveListener{l.(*net.TCPListener)}); err != nil {
 			log.Fatalln(err)
@@ -109,7 +109,7 @@ func (s *Server) Serve() (err error) {
 	if err != nil {
 		return err
 	}
-	s.Logf("Serving packerd at https://%s", s.httpsServerL.Addr())
+	s.Logf("Serving labreserved at https://%s", s.httpsServerL.Addr())
 
 	wrapped := tls.NewListener(tcpKeepAliveListener{s.httpsServerL.(*net.TCPListener)}, httpsServer.TLSConfig)
 	if err := httpsServer.Serve(wrapped); err != nil {

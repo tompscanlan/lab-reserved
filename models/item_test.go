@@ -1,7 +1,6 @@
 package models
 
 import (
-	"log"
 	"testing"
 	"time"
 
@@ -109,9 +108,8 @@ func TestNewItem(t *testing.T) {
 		if !test.valid && err == nil {
 			t.Error("unexpected err for item %d", i)
 		}
-		log.Println(test.in)
-
-		log.Printf("%#v", test.in)
+		//		log.Println(test.in)
+		//		log.Printf("%#v", test.in)
 
 	}
 
