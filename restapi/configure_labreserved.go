@@ -18,6 +18,7 @@ import (
 
 func configureFlags(api *operations.LabreservedAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+	labreserved.AddFlags(api)
 }
 
 func configureAPI(api *operations.LabreservedAPI) http.Handler {
