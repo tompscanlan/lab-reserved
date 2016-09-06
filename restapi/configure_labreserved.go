@@ -2,12 +2,15 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
+	"github.com/tompscanlan/labreserved"
+	"github.com/tompscanlan/labreserved/models"
 	"github.com/tompscanlan/labreserved/restapi/operations"
 )
 
@@ -32,10 +35,67 @@ func configureAPI(api *operations.LabreservedAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.GetItemsHandler = operations.GetItemsHandlerFunc(func(params operations.GetItemsParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetItems has not yet been implemented")
+		items := operations.NewGetItemsOK()
+		items.SetPayload(labreserved.AllItems)
+		return items
 	})
 	api.PostItemHandler = operations.PostItemHandlerFunc(func(params operations.PostItemParams) middleware.Responder {
-		return middleware.NotImplemented("operation .PostItem has not yet been implemented")
+		labreserved.AllItems[*params.Additem.Name] = *params.Additem
+		item := operations.NewPostItemOK()
+		i, ok := labreserved.AllItems[*params.Additem.Name]
+		if ok {
+			item.SetPayload(&i)
+			return item
+		} else {
+			err := operations.NewPostItemBadRequest()
+			err.SetPayload("failed to add and/or find item to lab map")
+			return err
+		}
+
+	})
+	api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
+		users := operations.NewGetUsersOK()
+		users.SetPayload(labreserved.AllUsers)
+		return users
+	})
+	api.PostUserHandler = operations.PostUserHandlerFunc(func(params operations.PostUserParams) middleware.Responder {
+		labreserved.AllUsers[*params.Adduser.Name] = *params.Adduser
+		user := operations.NewPostUserOK()
+		u, ok := labreserved.AllUsers[*params.Adduser.Name]
+		if ok {
+			user.SetPayload(&u)
+			return user
+		} else {
+			err := operations.NewPostUserBadRequest()
+			err.SetPayload("failed to add and/or find user to lab map")
+			return err
+		}
+	})
+	api.GetItemNameHandler = operations.GetItemNameHandlerFunc(func(params operations.GetItemNameParams) middleware.Responder {
+		resp := operations.NewGetItemNameOK()
+		item := labreserved.AllItems[params.Name]
+		resp.SetPayload(&item)
+		return resp
+	})
+	api.PostItemNameReservationHandler = operations.PostItemNameReservationHandlerFunc(func(params operations.PostItemNameReservationParams) middleware.Responder {
+		item, ok := labreserved.AllItems[params.Name]
+		if !ok {
+			err := operations.NewPostItemNameReservationBadRequest()
+			err.SetPayload(fmt.Sprintf("failed to find item named %s. Can't add reservation.", params.Name))
+			return err
+		}
+
+		item.Reserve(*params.Reservation.Username, models.StrfmtDateTimeToTime(params.Reservation.Begin), int(*params.Reservation.Hoursheld))
+		labreserved.AllItems[params.Name] = item
+		resp := operations.NewPostItemNameReservationOK()
+		resp.SetPayload(params.Reservation)
+		return resp
+
+		//		if err != nil {
+		//			err := operations.NewPostItemNameReservationBadRequest()
+		//			err.SetPayload(err)
+		//			return err
+		//		}
 	})
 
 	api.ServerShutdown = func() {}

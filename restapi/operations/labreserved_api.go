@@ -44,10 +44,18 @@ type LabreservedAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
+	// GetItemNameHandler sets the operation handler for the get item name operation
+	GetItemNameHandler GetItemNameHandler
 	// GetItemsHandler sets the operation handler for the get items operation
 	GetItemsHandler GetItemsHandler
+	// GetUsersHandler sets the operation handler for the get users operation
+	GetUsersHandler GetUsersHandler
 	// PostItemHandler sets the operation handler for the post item operation
 	PostItemHandler PostItemHandler
+	// PostItemNameReservationHandler sets the operation handler for the post item name reservation operation
+	PostItemNameReservationHandler PostItemNameReservationHandler
+	// PostUserHandler sets the operation handler for the post user operation
+	PostUserHandler PostUserHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -106,12 +114,28 @@ func (o *LabreservedAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.GetItemNameHandler == nil {
+		unregistered = append(unregistered, "GetItemNameHandler")
+	}
+
 	if o.GetItemsHandler == nil {
 		unregistered = append(unregistered, "GetItemsHandler")
 	}
 
+	if o.GetUsersHandler == nil {
+		unregistered = append(unregistered, "GetUsersHandler")
+	}
+
 	if o.PostItemHandler == nil {
 		unregistered = append(unregistered, "PostItemHandler")
+	}
+
+	if o.PostItemNameReservationHandler == nil {
+		unregistered = append(unregistered, "PostItemNameReservationHandler")
+	}
+
+	if o.PostUserHandler == nil {
+		unregistered = append(unregistered, "PostUserHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -190,12 +214,32 @@ func (o *LabreservedAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/item/{name}"] = NewGetItemName(o.context, o.GetItemNameHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/items"] = NewGetItems(o.context, o.GetItemsHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/item"] = NewPostItem(o.context, o.PostItemHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/item/{name}/reservation"] = NewPostItemNameReservation(o.context, o.PostItemNameReservationHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/user"] = NewPostUser(o.context, o.PostUserHandler)
 
 }
 

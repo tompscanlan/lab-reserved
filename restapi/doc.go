@@ -4,8 +4,8 @@ REST interface for lab items reserved by a person until a date
 
 
     Schemes:
-      http
       https
+      http
     Host: localhost
     BasePath: /
     Version: 0.0.1

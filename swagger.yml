@@ -40,6 +40,77 @@ paths:
           description: Error
           schema:
             type: string
+  /item/{name}:
+    get:
+      parameters:
+        - name: name
+          description: name of the lab equipment
+          in: path
+          type: string
+          minLength: 1
+          maxLength: 512
+          required: true
+      responses:
+        200:
+          description: get specific lab item
+          schema:
+            type: object
+            $ref: "#/definitions/item"
+  /item/{name}/reservation:
+    post:
+      description: post a reservation for a specific lab item
+      parameters:
+        - name: name
+          description: name of the lab equipment
+          in: path
+          type: string
+          minLength: 1
+          maxLength: 512
+          required: true
+        - name: reservation
+          description: representation of the reservation to add
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/reservation"
+      responses:
+        200:
+          description: Accepted
+          schema:
+            type: object
+            $ref: "#/definitions/reservation"
+        400:
+          description: Error
+          schema:
+            type: string
+  /users:
+    get:
+      responses:
+        200:
+          description: list all users in the lab
+          schema:
+            type: object
+            $ref: "#/definitions/users"
+  /user:
+    post:
+      description: add a single user
+      parameters:
+        - name: adduser
+          description: representation of the user to add
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/user"
+      responses:
+        200:
+          description: Accepted
+          schema:
+            type: object
+            $ref: "#/definitions/user"
+        400:
+          description: Error
+          schema:
+            type: string
 definitions:
   items:
     description: map of items

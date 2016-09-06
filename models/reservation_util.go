@@ -20,6 +20,18 @@ func NewReservation(username string, begin time.Time, hours int) Reservation {
 	return *r
 }
 
+func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
+
+	parsed, err := time.Parse(time.RFC3339, date.String())
+	if err != nil {
+		zero := new(time.Time)
+
+		log.Println(err)
+		return *zero
+	}
+	return parsed
+}
+
 func (r Reservation) String() string {
 	b, err := json.Marshal(r)
 
