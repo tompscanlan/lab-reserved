@@ -12,6 +12,7 @@ func NewItems() Items {
 	return items
 }
 
+// returns JSON string
 func (items Items) String() string {
 	b, err := json.Marshal(items)
 
@@ -22,6 +23,17 @@ func (items Items) String() string {
 	n := bytes.IndexByte(b, 0)
 	s := string(b[:n])
 	return s
+}
+
+// Load items from JSON.
+// clobbers current Items
+func (items *Items) LoadJSON(s string) error {
+	err := json.Unmarshal([]byte(s), items)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Store all the items as JSON in a file

@@ -107,7 +107,7 @@ func TestNewItem(t *testing.T) {
 			t.Error(err)
 		}
 		if !test.valid && err == nil {
-			t.Error("unexpected err for item %d", i)
+			t.Errorf("unexpected err for item %d", i)
 		}
 		log.Println(test.in)
 		//		log.Printf("%#v", test.in)
