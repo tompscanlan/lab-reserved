@@ -1,6 +1,12 @@
 # lab-reserved
 representing items in a lab, reserved by an email holder, until some date
 
+## build container
+
+This requires a local version of make, but will build the container inside a golang container.
+
+There is a bug currently running on Mac if you build under Mac and run under Mac unless we build this way and run in the same container.  Later, you should be able to change the dockerfile to be "FROM" scratch
+    make
 
 ## Use
 
