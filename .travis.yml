@@ -6,10 +6,6 @@ go:
   - 1.6.3
 matrix:
   include:
-    - go: 1.4.2
-      script:
-        - go get -t -v ./...
-        - go test -v -race ./...
     - go: 1.7
       script:
         - go get -t -v ./...
@@ -19,7 +15,6 @@ matrix:
         - go get -t -v ./...
         - go test -v -race ./...
   allow_failures:
-    - go: 1.4.2
     - go: 1.7
     - go: tip
   fast_finish: true
@@ -30,4 +25,17 @@ script:
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go tool vet .
   - go test -v -race ./...
-
+  - sh -x ./scripts/make-cert.sh
+  - docker build -t tompscanlan/labreserved --rm=true .
+  - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 tompscanlan/labreserved
+  - curl --request GET   --url http://127.0.0.1:2080/items   --header 'content-type: application/json'
+  - curl -k --request GET   --url https://127.0.0.1:20443/items   --header 'content-type: application/json'
+  - curl --request POST --url http://127.0.0.1:2080/item --header 'content-type: application/json' --data '{ "name": "server-9","description": "from rest"}'
+  - curl --request POST --url http://127.0.0.1:2080/item --header 'content-type: application/json' --data '{ "name": "server-10","description": "from rest"}'
+  - curl --request POST --url http://127.0.0.1:2080/item --header 'content-type: application/json' --data '{ "name": "server-11","description": "from rest"}'
+  - curl --request POST  --url http://127.0.0.1:2080/user  --header 'content-type: application/json'  --data '{ "name": "tom","email": "tom@test.com"}'
+  - curl --request POST  --url http://127.0.0.1:2080/user  --header 'content-type: application/json'  --data '{ "name": "bob","email": "bob@test.com"}'
+  - curl --request POST --url http://127.0.0.1:2080/item/server1/reservation  --header 'content-type: application/json'  --data '{ "username": "tom","begin": "2016-09-06T00:09:04.032-04:00","hoursheld": 3}'
+  - curl --request POST --url http://127.0.0.1:2080/item/server-11/reservation  --header 'content-type: application/json'  --data '{ "username": "bob","begin": "2016-09-05T00:09:04.032-04:00","hoursheld": 3}'
+  - curl --request POST --url http://127.0.0.1:2080/item/server-11/reservation  --header 'content-type: application/json'  --data '{ "username": "bob","begin": "2016-09-06T00:09:04.032-04:00","hoursheld": 24}'
+  - curl --request GET   --url http://127.0.0.1:2080/items   --header 'content-type: application/json' | jq .

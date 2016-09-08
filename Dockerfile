@@ -1,6 +1,6 @@
 # current bug on Mac prevents running from scratch.
-#FROM scratch
-FROM golang:1.6
+FROM scratch
+#FROM golang:1.6
 MAINTAINER Tom Scanlan <tscanlan@vmware.com>
 
 ENV BLOB_ENDPOINT http://blobs.vmwaredevops.appspot.com/api/v1/blobs
