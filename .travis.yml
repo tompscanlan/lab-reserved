@@ -12,13 +12,10 @@ before_script:
   - go test -v -race ./...
 script:
   - go build ./cmd/labreserved-server/
-after_sucess:
-before_deploy:
   - sh -x ./scripts/make-cert.sh
   - docker build -t tompscanlan/labreserved --rm=true .
   - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 tompscanlan/labreserved
   - curl --request GET   --url http://127.0.0.1:2080/items   --header 'content-type: application/json'
   - curl -k --request GET   --url https://127.0.0.1:20443/items   --header 'content-type: application/json'
-deploy:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push tompscanlan/labreserved
