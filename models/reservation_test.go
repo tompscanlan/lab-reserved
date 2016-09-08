@@ -39,7 +39,7 @@ func TestReservationValid(t *testing.T) {
 }
 
 func TestReservationOverlap(t *testing.T) {
-	for i, _ := range resTests {
+	for i := range resTests {
 		test := resTests[i]
 
 		err, overlap := test.in.Overlap(test.other)

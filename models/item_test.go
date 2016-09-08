@@ -118,7 +118,7 @@ func TestNewItem(t *testing.T) {
 
 func TestReserved(t *testing.T) {
 	time.Sleep(2 * time.Second)
-	for i, _ := range itemTests {
+	for i := range itemTests {
 		if itemTests[i].in.isReserved() != itemTests[i].isReserved {
 			t.Errorf("%d isn't reserved, but should be", i)
 		}

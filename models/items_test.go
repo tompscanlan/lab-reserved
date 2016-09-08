@@ -14,7 +14,7 @@ func TestNewItems(t *testing.T) {
 	items["name1"] = NewItem("name1", "desc")
 	items["name2"] = NewItem("name2", "desc")
 
-	for i, _ := range items {
+	for i := range items {
 		item := items[i]
 		err := item.Validate(reg)
 		if err != nil {

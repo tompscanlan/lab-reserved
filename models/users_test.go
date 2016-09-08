@@ -14,7 +14,7 @@ func TestNewUsers(t *testing.T) {
 	users["joe"] = NewUser("joe", "joe@example.com")
 	users["jim"] = NewUser("jim", "jim@example.com")
 
-	for i, _ := range users {
+	for i := range users {
 		user := users[i]
 		err := user.Validate(reg)
 		if err != nil {
