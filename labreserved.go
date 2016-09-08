@@ -1,6 +1,7 @@
 package labreserved
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -11,6 +12,11 @@ var AllItems models.Items
 var AllUsers models.Users
 
 func init() {
+	// skip this initialization if we're testing
+	if flag.Lookup("test.v") != nil {
+		return
+	}
+
 	log.Println("init labreserved")
 
 	// read inventoy from the blob, and initialize our
