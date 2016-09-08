@@ -6,6 +6,8 @@ go:
   - 1.6.3
 install:
   - go get -t -v ./...
+  - npm install --save-dev frisby
+  - npm install -g jasmine-node
 before_script:
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go tool vet .
@@ -16,4 +18,5 @@ script:
   - docker build -t tompscanlan/labreserved --rm=true .
   - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 tompscanlan/labreserved
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - jasmine-node frisbyjs/
   - docker push tompscanlan/labreserved
