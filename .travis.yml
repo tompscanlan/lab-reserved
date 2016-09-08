@@ -4,27 +4,11 @@ services:
 language: go
 go:
   - 1.6.3
-matrix:
-  include:
-    - go: 1.7
-      script:
-        - go get -t -v ./...
-        - go test -v -race ./...
-    - go: tip
-      script:
-        - go get -t -v ./...
-        - go test -v -race ./...
-  allow_failures:
-    - go: 1.7
-    - go: tip
-  fast_finish: true
-install:
-  - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 script:
-  - go get -t -v ./...
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go tool vet .
   - go test -v -race ./...
+  - go build ./cmd/labreserved-server/
   - sh -x ./scripts/make-cert.sh
   - docker build -t tompscanlan/labreserved --rm=true .
   - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 tompscanlan/labreserved
