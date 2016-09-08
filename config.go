@@ -33,7 +33,7 @@ func init() {
 func AddFlags(api *operations.LabreservedAPI) {
 	var BlobFlags struct {
 		Endpoint func(string) `short:"b" long:"blob-endpoint" description:"endpoint to blob storage" default:"http://blobs.vmwaredevops.appspot.com/api/v1/blobs"`
-		Id       func(int)    `short:"i" long:"blob-id" description:"id of blob to set" default:"9999" optional:"false"`
+		Id       func(int)    `short:"i" long:"blob-id" description:"id of blob to set" optional:"false"`
 	}
 
 	BlobFlags.Id = func(id int) {

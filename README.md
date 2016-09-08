@@ -7,12 +7,13 @@ This requires a local version of make, but will build the container inside a gol
 
 There is a bug currently running on Mac if you build under Mac and run under Mac unless we build this way and run in the same container.  Later, you should be able to change the dockerfile to be "FROM" scratch
     make
+    TEAMID=22 make run
 
 ## run container
 
     # BLOB_ID should be the only env variable you need to set
     # if the blob end point changes, you'll want to set BLOB_ENDPOINT
-    docker run -d -p2080:80 -p20443:443 -e BLOB_ID=10   tompscanlan/labreserved
+    docker run -d -p2080:80 -p20443:443 -e BLOB_ID=22   tompscanlan/labreserved
 
 
 ## build container

@@ -40,18 +40,31 @@ func configureAPI(api *operations.LabreservedAPI) http.Handler {
 		items.SetPayload(labreserved.AllItems)
 		return items
 	})
+	// adding a new item to the equipment hash
 	api.PostItemHandler = operations.PostItemHandlerFunc(func(params operations.PostItemParams) middleware.Responder {
+
+		// set the item
 		labreserved.AllItems[*params.Additem.Name] = *params.Additem
-		item := operations.NewPostItemOK()
+
+		// verify it is in the hash or fail
 		i, ok := labreserved.AllItems[*params.Additem.Name]
-		if ok {
-			item.SetPayload(&i)
-			return item
-		} else {
-			err := operations.NewPostItemBadRequest()
-			err.SetPayload("failed to add and/or find item to lab map")
-			return err
+		if !ok {
+			outerr := operations.NewPostItemBadRequest()
+			outerr.SetPayload("failed to add and/or find item to lab map")
+			return outerr
 		}
+
+		// store the inventory or fail
+		err := labreserved.PostBlob(labreserved.BlobID, labreserved.AllItems.String())
+		if err != nil {
+			outerr := operations.NewPostItemBadRequest()
+			outerr.SetPayload(fmt.Sprintf("failed in backend store: %s", err))
+			return outerr
+		}
+
+		sucess := operations.NewPostItemOK()
+		sucess.SetPayload(&i)
+		return sucess
 
 	})
 	api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {

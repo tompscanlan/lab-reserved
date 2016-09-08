@@ -1,7 +1,6 @@
 package models
 
 import (
-	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -20,8 +19,7 @@ func (items Items) String() string {
 		log.Println(err)
 	}
 
-	n := bytes.IndexByte(b, 0)
-	s := string(b[:n])
+	s := string(b[:])
 	return s
 }
 
