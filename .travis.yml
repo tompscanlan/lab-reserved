@@ -13,7 +13,9 @@ before_script:
   - go tool vet .
   - go test -v -race ./...
 script:
-  - go build ./cmd/labreserved-server/
+  - CGO_ENABLED=0 go build -a -installsuffix cgo ./cmd/labreserved-server/
+  - file labreserved-server
+  - ldd labreserved-server || true
   - sh -x ./scripts/make-cert.sh
   - docker build -t tompscanlan/labreserved --rm=true .
   - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 --name labd tompscanlan/labreserved
