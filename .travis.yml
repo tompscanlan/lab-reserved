@@ -16,7 +16,8 @@ script:
   - go build ./cmd/labreserved-server/
   - sh -x ./scripts/make-cert.sh
   - docker build -t tompscanlan/labreserved --rm=true .
-  - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 tompscanlan/labreserved
+  - docker run -d -p2080:80 -p20443:443 -e BLOB_ID=7357 --name labd tompscanlan/labreserved
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - jasmine-node frisbyjs/
+  - docker logs labd
   - docker push tompscanlan/labreserved
