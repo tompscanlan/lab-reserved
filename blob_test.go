@@ -14,12 +14,42 @@ func TestBlobSet(t *testing.T) {
 	}
 
 	testStr := `{
-  		"id": "xxxx",
-  		"version": "v1.0",
-  		"name": "Our team #10 blob",
-  		"content": "Wooot",
-  		"tag": ""
-		}`
+		"server11": {
+			"description": "from booo!",
+			"name": "server11",
+			"reservations": [
+			{
+				"begin": "2016-09-06T00:09:04.032-04:00",
+				"hoursheld": 3,
+				"username": "tom"
+			},
+			{
+				"begin": "2016-09-06T00:09:04.032-04:00",
+				"hoursheld": 3,
+				"username": "tom"
+			}
+			]
+		},
+		"server12": {
+			"description": "from booo!",
+			"name": "server12",
+			"reservations": [
+			{
+				"begin": "2016-09-06T00:09:04.032-04:00",
+				"hoursheld": 3,
+				"username": "tom"
+			}
+			]
+		},
+		"server13": {
+			"description": "from booo!",
+			"name": "server13"
+		},
+		"server9": {
+			"description": "from jasmine",
+			"name": "server9"
+		}
+	} `
 
 	err := PostBlob(testBlobId, testStr)
 	if err != nil {
