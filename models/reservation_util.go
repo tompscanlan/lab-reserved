@@ -32,6 +32,14 @@ func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
 	return parsed
 }
 
+func (r Reservation) BeginTime() time.Time {
+	return StrfmtDateTimeToTime(r.Begin)
+}
+
+func (r Reservation) EndTime() time.Time {
+	return r.BeginTime().Add(time.Duration(*r.Hoursheld) * time.Hour)
+}
+
 func (r Reservation) String() string {
 	b, err := json.Marshal(r)
 
