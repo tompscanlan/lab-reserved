@@ -146,7 +146,8 @@ definitions:
     required:
       - username
       - begin
-      - hoursheld
+      - end
+      - approved
     properties:
       username:
         description: user claiming the reservation
@@ -155,10 +156,14 @@ definitions:
         description: date-time the reservation begins
         type: string
         format: date-time
-      hoursheld:
-        description: length in hours of the reservation
-        type: integer
-        format: int64
+      end:
+        description: date-time the reservation ends
+        type: string
+        format: date-time
+      approved:
+        description: approved or not
+        type: string
+        format: boolean
   users:
     description: map of users
     type: object

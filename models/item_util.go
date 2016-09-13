@@ -13,9 +13,9 @@ func NewItem(name string, description string) Item {
 	return *item
 }
 
-func (item *Item) Reserve(owner string, time time.Time, hours int) bool {
+func (item *Item) Reserve(owner string, starttime time.Time, endtime time.Time) bool {
 
-	r := NewReservation(owner, time, hours)
+	r := NewReservation(owner, starttime, endtime)
 	item.Reservations = append(item.Reservations, &r)
 
 	return true

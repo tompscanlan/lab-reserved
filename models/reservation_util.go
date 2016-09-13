@@ -9,19 +9,21 @@ import (
 	//	"github.com/asaskevich/govalidator"
 )
 
-func NewReservation(username string, begin time.Time, hours int) Reservation {
+func NewReservation(username string, begin time.Time, end time.Time) Reservation {
 	r := new(Reservation)
 
-	h := int64(hours)
 	b := strfmt.DateTime(begin)
+	e := strfmt.DateTime(end)
+	f := false
 	r.Username = &username
 	r.Begin = &b
-	r.Hoursheld = &h
+	r.End = &e
+	r.Approved = &f
+	log.Printf("made new reservation:", r.String())
 	return *r
 }
 
 func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
-
 	parsed, err := time.Parse(time.RFC3339, date.String())
 	if err != nil {
 		zero := new(time.Time)
@@ -32,12 +34,21 @@ func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
 	return parsed
 }
 
+func TimeToStrfmtDateTime(time time.Time) *strfmt.DateTime {
+	log.Println("trying to convert time: ", time, " to strfmt.DateTime")
+	datetime, err := strfmt.ParseDateTime(time.String())
+	if err != nil {
+		log.Println(err)
+	}
+	return &datetime
+}
+
 func (r Reservation) BeginTime() time.Time {
 	return StrfmtDateTimeToTime(r.Begin)
 }
 
 func (r Reservation) EndTime() time.Time {
-	return r.BeginTime().Add(time.Duration(*r.Hoursheld) * time.Hour)
+	return StrfmtDateTimeToTime(r.End)
 }
 
 func (r Reservation) String() string {
@@ -63,16 +74,13 @@ func (r Reservation) GetTime() (error, time.Time) {
 }
 
 func (r Reservation) GetEndTime() (error, time.Time) {
-	zero := new(time.Time)
-
-	err, a := r.GetTime()
+	parsed, err := time.Parse(time.RFC3339, r.End.String())
 	if err != nil {
+		log.Println(err)
+		zero := new(time.Time)
 		return err, *zero
 	}
-
-	aend := a.Add(time.Duration(*r.Hoursheld) * time.Hour)
-
-	return nil, aend
+	return nil, parsed
 }
 
 func (r Reservation) ReservedAt(time time.Time) (error, bool) {

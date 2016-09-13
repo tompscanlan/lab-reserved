@@ -3,6 +3,7 @@ package restapi
 import (
 	"crypto/tls"
 	"fmt"
+	"log"
 	"net/http"
 
 	errors "github.com/go-openapi/errors"
@@ -49,17 +50,23 @@ func configureAPI(api *operations.LabreservedAPI) http.Handler {
 		// verify it is in the hash or fail
 		i, ok := labreserved.AllItems[*params.Additem.Name]
 		if !ok {
+			msg := "failed to add and/or find item to lab map"
 			outerr := operations.NewPostItemBadRequest()
-			outerr.SetPayload("failed to add and/or find item to lab map")
+
+			outerr.SetPayload(msg)
+			log.Println(msg)
 			return outerr
 		}
 
-		// store the inventory or fail
+		// store the inventory or fail???
 		err := labreserved.PostBlob(labreserved.BlobID, labreserved.AllItems.String())
 		if err != nil {
-			outerr := operations.NewPostItemBadRequest()
-			outerr.SetPayload(fmt.Sprintf("failed in backend store: %s", err))
-			return outerr
+			msg := fmt.Sprintf("failed in backend store: %s", err)
+
+			//outerr := operations.NewPostItemBadRequest()
+			//outerr.SetPayload(msg)
+			log.Println(msg)
+			//return outerr
 		}
 
 		sucess := operations.NewPostItemOK()
@@ -99,7 +106,7 @@ func configureAPI(api *operations.LabreservedAPI) http.Handler {
 			return err
 		}
 
-		item.Reserve(*params.Reservation.Username, models.StrfmtDateTimeToTime(params.Reservation.Begin), int(*params.Reservation.Hoursheld))
+		item.Reserve(*params.Reservation.Username, models.StrfmtDateTimeToTime(params.Reservation.Begin), models.StrfmtDateTimeToTime(params.Reservation.End))
 		labreserved.AllItems[params.Name] = item
 		resp := operations.NewPostItemNameReservationOK()
 		resp.SetPayload(params.Reservation)

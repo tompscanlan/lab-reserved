@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"log"
+	"time"
 
 	"fmt"
 	"io/ioutil"
@@ -66,6 +67,7 @@ func GetBlob(id int) (string, error) {
 	req.Header.Set("Accept", "application/json")
 
 	client := &http.Client{}
+	client.Timeout = 5 * time.Second
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err

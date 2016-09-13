@@ -16,17 +16,23 @@ swagger:model reservation
 */
 type Reservation struct {
 
+	/* approved or not
+
+	Required: true
+	*/
+	Approved *bool `json:"approved"`
+
 	/* date-time the reservation begins
 
 	Required: true
 	*/
 	Begin *strfmt.DateTime `json:"begin"`
 
-	/* length in hours of the reservation
+	/* date-time the reservation ends
 
 	Required: true
 	*/
-	Hoursheld *int64 `json:"hoursheld"`
+	End *strfmt.DateTime `json:"end"`
 
 	/* user claiming the reservation
 
@@ -39,12 +45,17 @@ type Reservation struct {
 func (m *Reservation) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateApproved(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateBegin(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateHoursheld(formats); err != nil {
+	if err := m.validateEnd(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -60,6 +71,15 @@ func (m *Reservation) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *Reservation) validateApproved(formats strfmt.Registry) error {
+
+	if err := validate.Required("approved", "body", m.Approved); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *Reservation) validateBegin(formats strfmt.Registry) error {
 
 	if err := validate.Required("begin", "body", m.Begin); err != nil {
@@ -69,9 +89,9 @@ func (m *Reservation) validateBegin(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Reservation) validateHoursheld(formats strfmt.Registry) error {
+func (m *Reservation) validateEnd(formats strfmt.Registry) error {
 
-	if err := validate.Required("hoursheld", "body", m.Hoursheld); err != nil {
+	if err := validate.Required("end", "body", m.End); err != nil {
 		return err
 	}
 

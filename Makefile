@@ -4,11 +4,17 @@ repo=tompscanlan/labreserved
 bin=labreserved-server
 
 all: docker
+local: $(bin)-local
 
 $(bin):
 	docker run -it -v "$$(PWD)":/go/src/github.com/$(repo) -w /go/src/github.com/$(repo) golang:1.6 bash -c "CGO_ENABLED=0 go get -v ./... && go build -a -v --installsuffix cgo  ./cmd/$(bin)"
 #	go get -v ./...
 #	go build -a -v ./cmd/$(bin)
+
+$(bin)-local: deps
+	go build -v -o $(bin)-local  ./cmd/$(bin)
+deps:
+	go get -v ./...
 
 docker: $(bin) temp.crt temp.key
 	./scripts/make-cert.sh

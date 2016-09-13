@@ -25,7 +25,7 @@ func init() {
 	log.Printf("loading inventory from blob #%d", BlobID)
 	inventory, err := GetBlob(BlobID)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to load blob: %s", err))
+		log.Printf("Failed to load blob from %s id %d: %s", BlobEndpoint, BlobID, err)
 	}
 
 	// make a new empty inventory
