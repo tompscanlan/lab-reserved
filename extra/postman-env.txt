@@ -1,0 +1,9 @@
+host:q3.butterhead.net
+team:10
+journal_port:8080
+approval_host:approval.vmwaredevops.appspot.com
+labserver_port:2080
+exception_port:8081
+reservation_port:8082
+updater_port:8083
+blob_host:blobs.vmwaredevops.appspot.com

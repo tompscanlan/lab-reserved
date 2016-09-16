@@ -14,15 +14,15 @@ var resTests = []struct {
 	overlap bool
 }{
 	{
-		NewReservation("tom", time.Now(), 3),
+		NewReservation("tom", time.Now(), time.Now().Add(3*time.Hour)),
 		true,
-		NewReservation("bob", time.Now(), 3),
+		NewReservation("bob", time.Now(), time.Now().Add(3*time.Hour)),
 		true,
 	},
 	{
-		NewReservation("tom", time.Now(), 3),
+		NewReservation("tom", time.Now(), time.Now().Add(3*time.Hour)),
 		true,
-		NewReservation("bob", time.Now().Add(4*time.Hour), 3),
+		NewReservation("bob", time.Now().Add(4*time.Hour), time.Now().Add(6*time.Hour)),
 		false,
 	},
 }

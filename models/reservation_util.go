@@ -19,7 +19,7 @@ func NewReservation(username string, begin time.Time, end time.Time) Reservation
 	r.Begin = &b
 	r.End = &e
 	r.Approved = &f
-	log.Printf("made new reservation:", r.String())
+	log.Printf("made new reservation: %s", r.String())
 	return *r
 }
 
