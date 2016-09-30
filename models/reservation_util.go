@@ -14,7 +14,7 @@ func NewReservation(username string, begin time.Time, end time.Time) Reservation
 
 	b := strfmt.DateTime(begin)
 	e := strfmt.DateTime(end)
-	f := false
+	f := true
 	r.Username = &username
 	r.Begin = &b
 	r.End = &e
