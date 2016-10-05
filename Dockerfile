@@ -4,7 +4,7 @@ FROM scratch
 MAINTAINER Tom Scanlan <tscanlan@vmware.com>
 
 ENV BLOB_ENDPOINT http://blobs.vmwaredevops.appspot.com/api/v1/blobs
-ENV BLOB_ID 7357
+ENV TEAM_ID 7357
 EXPOSE 80 443
 
 # Add the microservice

@@ -15,7 +15,7 @@ services:
       - 2080:80
       - 20443:443
     environment:
-      BLOB_ID: 10
+      TEAM_ID: 10
       BLOB_ENDPOINT: http://blobs.vmwaredevops.appspot.com/api/v1/blobs
     build:
       context: /Users/tscanlan/work/src/github.com/tompscanlan/labreserved

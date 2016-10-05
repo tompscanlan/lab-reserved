@@ -14,7 +14,7 @@ var BlobID = 7357
 
 func init() {
 	// allow defaults to be overridden from ENV
-	env := os.Getenv("BLOB_ID")
+	env := os.Getenv("TEAM_ID")
 	if env != "" {
 		i, err := strconv.Atoi(env)
 		if err != nil {

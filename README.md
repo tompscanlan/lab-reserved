@@ -11,9 +11,9 @@ There is a bug currently running on Mac if you build under Mac and run under Mac
 
 ## run container
 
-    # BLOB_ID should be the only env variable you need to set
+    # TEAM_ID should be the only env variable you need to set
     # if the blob end point changes, you'll want to set BLOB_ENDPOINT
-    docker run -d -p2080:80 -p20443:443 -e BLOB_ID=22   tompscanlan/labreserved
+    docker run -d -p2080:80 -p20443:443 -e TEAM_ID=22   tompscanlan/labreserved
 
 
 ## build container

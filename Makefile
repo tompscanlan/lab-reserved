@@ -27,7 +27,7 @@ clean: stop dockerclean
 	rm -f $(bin)
 
 run:
-	docker run -d -p2080:80 -p20443:443 -e BLOB_ID=$(TEAMID)  $(repo)
+	docker run -d -p2080:80 -p20443:443 -e TEAM_ID=$(TEAMID)  $(repo)
 
 stop:
 	docker kill $$(docker ps -a | awk '/$(bin)/ { print $$1}') || echo -
