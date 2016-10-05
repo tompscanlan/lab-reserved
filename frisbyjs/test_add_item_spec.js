@@ -5,7 +5,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
 
 
-for (i=500; i<520; i++) {
+for (i=500; i<505; i++) {
 
 	frisby.create('post an item')
 		.post(rest + "/item",
@@ -15,7 +15,7 @@ for (i=500; i<520; i++) {
 		.toss()
 }
 
-for (i=500; i<520; i++) {
+for (i=500; i<505; i++) {
 	frisby.create('check items')
 		.get(rest + "/items")
 		.expectStatus(200)
