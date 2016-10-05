@@ -100,7 +100,7 @@ func (r Reservation) Overlap(other Reservation) (error, bool) {
 	if err != nil {
 		return err, false
 	}
-	//	log.Printf("a: %s--%s, b: %s--%s", a, aend, b, bend)
+	log.Printf("a: %s--%s, b: %s--%s", a, aend, b, bend)
 
 	// if they start or end at same time, there is overlap
 	if a.Equal(b) || aend.Equal(bend) {
