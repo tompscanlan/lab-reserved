@@ -34,23 +34,6 @@ func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
 	return parsed
 }
 
-func TimeToStrfmtDateTime(time time.Time) *strfmt.DateTime {
-	log.Println("trying to convert time: ", time, " to strfmt.DateTime")
-	datetime, err := strfmt.ParseDateTime(time.String())
-	if err != nil {
-		log.Println(err)
-	}
-	return &datetime
-}
-
-func (r Reservation) BeginTime() time.Time {
-	return StrfmtDateTimeToTime(r.Begin)
-}
-
-func (r Reservation) EndTime() time.Time {
-	return StrfmtDateTimeToTime(r.End)
-}
-
 func (r Reservation) String() string {
 	b, err := json.Marshal(r)
 
