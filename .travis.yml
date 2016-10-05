@@ -5,13 +5,11 @@ language: go
 go:
   - 1.6.3
 install:
-  - go get -t -v ./...
   - npm install --save-dev frisby
   - npm install -g jasmine-node
 before_script:
-  - diff -u <(echo -n) <(gofmt -d -s .)
-  - go tool vet .
-  - go test -v -race ./...
+  - make deps
+  - make valid
 script:
   - make docker
   - make run
