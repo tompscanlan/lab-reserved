@@ -7,8 +7,6 @@ all: $(bin)-local
 
 $(bin): deps
 	CGO_ENABLED=0 go build -a -v --installsuffix cgo  ./cmd/$(bin)
-	file $(bin)
-	ldd $(bin)
 
 $(bin)-local: deps
 	go build -v -o $(bin)-local  ./cmd/$(bin)
