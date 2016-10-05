@@ -6,7 +6,9 @@ bin=labreserved-server
 all: $(bin)-local
 
 $(bin): deps
-	env GOOS=linux GOARCH=amd64 go build -a -v --installsuffix cgo  ./cmd/$(bin)
+	CGO_ENABLED=0 go build -a -v --installsuffix cgo  ./cmd/$(bin)
+	file $(bin)
+	ldd $(bin)
 
 $(bin)-local: deps
 	go build -v -o $(bin)-local  ./cmd/$(bin)
