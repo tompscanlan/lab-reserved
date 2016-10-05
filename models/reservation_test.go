@@ -45,9 +45,10 @@ func TestReservationOverlap(t *testing.T) {
 		err, overlap := test.in.Overlap(test.other)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 		if overlap != test.overlap {
-			t.Errorf("%d overlap should be (%v) but isn't", i, test.overlap)
+			t.Errorf("%d overlap should be (%v) but is (%v)", i, test.overlap, overlap)
 		}
 	}
 }
