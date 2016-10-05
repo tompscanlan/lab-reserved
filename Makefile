@@ -14,8 +14,10 @@ deps:
 	go get -v ./...
 
 docker: $(bin) temp.crt temp.key
-	./scripts/make-cert.sh
 	docker build -t $(repo) --rm=true .
+
+temp.crt temp.key:
+	./scripts/make-cert.sh
 
 dockerclean:
 	echo "Cleaning up Docker Engine before building."
@@ -27,7 +29,7 @@ clean: stop dockerclean
 	rm -f $(bin)
 
 run:
-	docker run -d -p2080:80 -p20443:443 -e TEAM_ID=$(TEAMID)  $(repo)
+	docker run -d -p2080:80 -p20443:443 -e TEAM_ID=$(TEAMID)  $(repo) 
 
 stop:
 	docker kill $$(docker ps -a | awk '/$(bin)/ { print $$1}') || echo -
@@ -36,5 +38,5 @@ valid:
 	go tool vet .
 	go test -v -race ./...
 
-.PHONY: imports docker clean run stop
+.PHONY: imports docker clean run stop deps
 
