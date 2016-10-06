@@ -26,9 +26,8 @@ func NewReservation(username string, begin time.Time, end time.Time) Reservation
 func StrfmtDateTimeToTime(date *strfmt.DateTime) time.Time {
 	parsed, err := time.Parse(time.RFC3339, date.String())
 	if err != nil {
-		zero := new(time.Time)
-
 		log.Println(err)
+		zero := new(time.Time)
 		return *zero
 	}
 	return parsed
@@ -47,7 +46,8 @@ func (r Reservation) String() string {
 
 // returns a zero time on error
 func (r Reservation) GetTime() (error, time.Time) {
-	parsed, err := time.Parse(time.RFC3339, r.Begin.String())
+
+	parsed, err := time.Parse(time.RFC3339, (*r.Begin).String())
 	if err != nil {
 		log.Println(err)
 		zero := new(time.Time)
@@ -57,7 +57,7 @@ func (r Reservation) GetTime() (error, time.Time) {
 }
 
 func (r Reservation) GetEndTime() (error, time.Time) {
-	parsed, err := time.Parse(time.RFC3339, r.End.String())
+	parsed, err := time.Parse(time.RFC3339, (*r.End).String())
 	if err != nil {
 		log.Println(err)
 		zero := new(time.Time)
